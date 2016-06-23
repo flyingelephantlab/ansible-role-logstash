@@ -13,8 +13,8 @@
     group: root
     mode: 0644
   with_items:
-    - 01-lumberjack-input.conf
-    - 30-lumberjack-output.conf
+    - 01-beats-input.conf
+    - 30-elasticsearch-output.conf
   notify: restart logstash
 
 - name: Create Logstash filters.
@@ -27,9 +27,9 @@
   with_items:
     - 10-syslog.conf
     - 11-nginx.conf
-    - 12-apache.conf
+    - 12-redis.conf
+    - 13-postgres.conf
     - 14-solr.conf
-    - 15-drupal.conf
   notify: restart logstash
 
 - name: Create Logstash configuration file for local syslog.
@@ -62,7 +62,7 @@
     path: "{{ logstash_ssl_dir }}"
     state: directory
 
-- name: Copy SSL key and cert for logstash-forwarder.
+- name: Copy SSL key and cert for logstash.
   copy:
     src: "{{ item }}"
     dest: "{{ logstash_ssl_dir }}/{{ item | basename }}"
