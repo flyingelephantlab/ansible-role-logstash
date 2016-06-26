@@ -5,10 +5,6 @@
 - include: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
-- include: plugins.yml
-  tags:
-      - plugins
-
 - name: Create Logstash configuration files.
   template:
     src: "{{ item }}.j2"
@@ -52,6 +48,16 @@
     state: absent
   when: not logstash_monitor_local_syslog
   notify: restart logstash
+
+- name: Install logstash plugins
+  when: logstash_plugins is defined
+  command: "/etc/logstash/bin/plugin install {{ item.plugin }}{% if item.version is defined and item.version != '' %}/{{ item.version }}{% endif %}"
+  register: plugin_installed
+  failed_when: "'Failed to install' in plugin_installed.stderr"
+  changed_when: plugin_installed.rc == 0
+  with_items: "{{ logstash_plugins | default([]) }}"
+  notify:
+      - restart logstash
 
 - name: Warn user if using insecure SSL key pair.
   debug:
