@@ -50,12 +50,13 @@
   notify: restart logstash
 
 - name: Install logstash plugins
-  when: logstash_plugins is defined
-  command: "/etc/logstash/bin/plugin install {{ item.plugin }}{% if item.version is defined and item.version != '' %}/{{ item.version }}{% endif %}"
+  become: yes
+  command: "/opt/logstash/bin/plugin install {{ item.plugin }}{% if item.version is defined and item.version != '' %}/{{ item.version }}{% endif %}"
   register: plugin_installed
   failed_when: "'Failed to install' in plugin_installed.stderr"
   changed_when: plugin_installed.rc == 0
   with_items: "{{ logstash_plugins | default([]) }}"
+  when: logstash_plugins is defined
   notify:
       - restart logstash
 
