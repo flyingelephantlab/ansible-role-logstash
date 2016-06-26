@@ -5,6 +5,10 @@
 - include: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
+- include: plugins.yml
+  tags:
+      - plugins
+
 - name: Create Logstash configuration files.
   template:
     src: "{{ item }}.j2"
