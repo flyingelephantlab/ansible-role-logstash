@@ -32,6 +32,17 @@
     - 14-solr.conf
   notify: restart logstash
 
+- name: Create Logstash patterns.
+  copy:
+    src: "patterns/{{ item }}"
+    dest: "/opt/logstash/patterns/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - nginx
+  notify: restart logstash
+
 - name: Create Logstash configuration file for local syslog.
   template:
     src: 02-local-syslog-input.conf.j2
