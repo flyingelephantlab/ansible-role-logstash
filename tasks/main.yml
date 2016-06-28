@@ -33,7 +33,12 @@
   notify: restart logstash
 
 - name: Ensure Logstash patterns directory exists
- file: path="/opt/logstash/patterns/" state=directory mode=0644 owner=root group=root
+  file:
+    path: "/opt/logstash/patterns/"
+    state: directory
+    mode: 0644
+    owner: root
+    group: root
 
 - name: Create Logstash patterns.
   copy:
