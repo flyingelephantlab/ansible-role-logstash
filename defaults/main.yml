@@ -12,4 +12,4 @@ logstash_ssl_key_file: logstash-forwarder-example.key
 
 logstash_enabled_on_boot: yes
 
-java: "openjdk-8-jre"
+java: "openjdk-7-jre"
