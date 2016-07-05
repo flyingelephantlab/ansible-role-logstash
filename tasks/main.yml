@@ -37,15 +37,15 @@
     path: "/opt/logstash/patterns/"
     state: directory
     mode: 0644
-    owner: root
-    group: root
+    owner: logstash
+    group: logstash
 
 - name: Create Logstash patterns.
   copy:
     src: "patterns/{{ item }}"
     dest: "/opt/logstash/patterns/{{ item }}"
-    owner: root
-    group: root
+    owner: logstash
+    group: logstash
     mode: 0644
   with_items:
     - nginx
